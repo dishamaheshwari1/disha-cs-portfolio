@@ -6,12 +6,13 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Portfolio palette (dark jewel-tone theme):
+ * Portfolio palette (dark navy theme):
  *  Sealskin     #0D0D0D  background (near-black)
  *  Keystone     #1A1A1A  surface
- *  Carnelian    #2563EB  accent / active (deep sapphire blue)
- *  Creamy       #FDFCF0  text / borders
- *  Minimalist   #8A857A  muted / inactive
+ *  Carnelian    #34454D  accent / active (deep navy)
+ *  Creamy       #F5F5F5  primary text (lace)
+ *  Lace         #DCD9D0  card borders / muted
+ *  Minimalist   #DCD9D0  muted / inactive (alias of lace)
  */
 
 @theme inline {
