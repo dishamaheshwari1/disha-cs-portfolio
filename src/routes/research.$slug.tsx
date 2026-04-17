@@ -69,7 +69,7 @@ function ResearchDetailPage() {
 
       <Section>
         <article className="space-y-6 text-creamy/85 leading-relaxed text-lg">
-          {entry.content.map((para, i) => (
+          {entry.content.map((para: string, i: number) => (
             <p key={i}>{para}</p>
           ))}
         </article>
