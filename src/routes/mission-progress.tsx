@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Check } from "lucide-react";
+import { useState } from "react";
 import { FirstLetterLarge } from "../components/FirstLetterLarge";
 import { Section } from "../components/Section";
 
@@ -43,9 +44,11 @@ const FUTURE = [
   { text: "Build a hardware companion to Lumen", done: false },
 ];
 
-function ProgressBar({ value }: { value: number }) {
+function ProgressBar({ value, color }: { value: number; color: "blue" | "cream" }) {
   const segments = 20;
   const filled = Math.round((value / 100) * segments);
+  const fill =
+    color === "blue" ? "var(--color-carnelian)" : "var(--color-creamy)";
   return (
     <div className="flex gap-[3px] h-5">
       {Array.from({ length: segments }).map((_, i) => (
@@ -53,12 +56,7 @@ function ProgressBar({ value }: { value: number }) {
           key={i}
           className="flex-1 border border-creamy/30"
           style={{
-            backgroundColor:
-              i < filled
-                ? i % 2 === 0
-                  ? "var(--color-carnelian)"
-                  : "var(--color-creamy)"
-                : "transparent",
+            backgroundColor: i < filled ? fill : "transparent",
           }}
         />
       ))}
@@ -67,22 +65,33 @@ function ProgressBar({ value }: { value: number }) {
 }
 
 function Checklist({ items }: { items: { text: string; done: boolean }[] }) {
+  const [state, setState] = useState(items);
+  const toggle = (idx: number) =>
+    setState((prev) =>
+      prev.map((it, i) => (i === idx ? { ...it, done: !it.done } : it)),
+    );
   return (
     <ul className="space-y-3">
-      {items.map((it) => (
+      {state.map((it, idx) => (
         <li key={it.text} className="flex items-start gap-3">
-          <span
-            className={`mt-1 w-5 h-5 shrink-0 border flex items-center justify-center transition-colors ${
+          <button
+            type="button"
+            onClick={() => toggle(idx)}
+            aria-pressed={it.done}
+            aria-label={it.text}
+            className={`mt-1 w-5 h-5 shrink-0 border flex items-center justify-center transition-colors cursor-pointer ${
               it.done
                 ? "bg-carnelian border-carnelian"
-                : "border-creamy/40 bg-transparent"
+                : "border-creamy/40 bg-transparent hover:border-creamy"
             }`}
           >
-            {it.done && <Check className="w-3.5 h-3.5 text-creamy" strokeWidth={3} />}
-          </span>
+            {it.done && (
+              <Check className="w-3.5 h-3.5 text-creamy" strokeWidth={3} />
+            )}
+          </button>
           <span
-            className={`text-sm md:text-base ${
-              it.done ? "text-minimalist line-through" : "text-creamy"
+            className={`text-sm md:text-base select-none ${
+              it.done ? "text-creamy/60" : "text-creamy"
             }`}
           >
             {it.text}
@@ -119,7 +128,7 @@ function MissionProgressPage() {
           className="text-creamy text-2xl md:text-3xl mb-10"
         />
         <div className="space-y-6">
-          {SKILLS.map((s) => (
+          {SKILLS.map((s, i) => (
             <div key={s.label}>
               <div className="flex justify-between items-baseline mb-2">
                 <span className="text-xs uppercase tracking-[0.25em] text-creamy">
@@ -129,7 +138,7 @@ function MissionProgressPage() {
                   {s.value} / 100
                 </span>
               </div>
-              <ProgressBar value={s.value} />
+              <ProgressBar value={s.value} color={i % 2 === 0 ? "blue" : "cream"} />
             </div>
           ))}
         </div>
