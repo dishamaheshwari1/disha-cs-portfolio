@@ -1,4 +1,4 @@
-import { Link, useLocation } from "@tanstack/react-router";
+import { Link, useLocation } from "react-router-dom";
 
 const NAV = [
   { to: "/", label: "Mission Statement" },
@@ -21,16 +21,17 @@ export function Header() {
         </Link>
         <ul className="flex items-center gap-4 md:gap-9">
           {NAV.map((item) => {
-            const active = pathname === item.to;
+            const active =
+              item.to === "/"
+                ? pathname === "/"
+                : pathname === item.to || pathname.startsWith(item.to + "/");
             return (
               <li key={item.to}>
                 <Link
                   to={item.to}
                   className={[
                     "text-[10px] md:text-xs uppercase tracking-[0.25em] transition-colors duration-300",
-                    active
-                      ? "text-carnelian"
-                      : "text-creamy hover:text-lace",
+                    active ? "text-carnelian" : "text-creamy hover:text-lace",
                   ].join(" ")}
                 >
                   {item.label}
